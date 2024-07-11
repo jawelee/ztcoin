@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ZTC check-in</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            list-style: none;
+            text-decoration: none;
+            color: inherit;
+            font-weight: normal;
+            font-family: "微软雅黑";
+            box-sizing: border-box;
+            font-style: normal;
+            outline: none;
+        }
+        body {
+            width: 100%;
+            overflow-x: hidden;
+            background: url(//repo.bfw.wiki/bfwrepo/images/qiandao/bg.jpg) top center no-repeat #f5f5f5;
+            background-size: 100%;
+        }
+        img {
+            vertical-align: middle;
+            max-width: 100%;
+        }
+        a:hover,a:active,a:visited,a:link,a:focus {
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+            text-decoration: none;
+        }
+        .red {
+            color: #ff2d23;
+        }
+        .container {
+            width: 100%;
+            padding: .4rem .2rem;
+        }
+        /*顶部*/
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #FFFFFF;
+        }
+        .top-bar i {
+            display: inline-block;
+            width: 1rem;
+            height: .5rem;
+            background: url(//repo.bfw.wiki/bfwrepo/images/qiandao/icon-left.png) left center no-repeat;
+            background-size: auto .40rem;
+        }
+        .top-bar span {
+            font-size: .36rem;
+        }
+        .top-bar a {
+            font-size: .26rem;
+        }
+        /*积分面板*/
+        .jf-panel {
+            width: 100%;
+            padding-top: .85rem;
+            padding-right: .35rem;
+        }
+        .jf-panel .dj {
+            float: right;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: .25rem;
+            background: #fed4b7;
+            border-radius: .42rem;
+        }
+        .jf-panel .dj img {
+            width: .42rem;
+            height: .42rem;
+        }
+        .jf-panel .dj span {
+            padding: 0 .25rem 0 .14rem;
+        }
+        .jf-panel .jf {
+            padding-top: .3rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            padding-bottom: .48rem;
+        }
+        .jf-panel .jf label {
+            font-size: .26rem;
+        }
+        .jf-panel .jf span {
+            font-size: .88rem;
+            line-height: .70rem;
+            padding-right: .3rem;
+            padding-left: .05rem;
+        }
+        .jf-panel .jf a {
+            font-size: .24rem;
+            padding: .05rem .42rem .06rem .18rem;
+            background: url(//repo.bfw.wiki/bfwrepo/images/qiandao/icon-right.png) right .14rem center no-repeat #ff2d23;
+            background-size: auto .23rem;
+            color: #FFFFFF;
+            border-radius: .34rem;
+        }
+        .jf-panel .sigin-btn {
+            width: 4.32rem;
+            height: .94rem;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: .32rem;
+            background: url(//repo.bfw.wiki/bfwrepo/images/qiandao/btn-bg.png) center center no-repeat;
+            background-size: 100% 100%;
+            letter-spacing: .03rem;
+        }
+        /*签到面板*/
+        .qd-panel {
+            width: 100%;
+            border-radius: .20rem;
+            background: #FFFFFF;
+            margin-top: .25rem;
+            padding: .3rem;
+        }
+        .qd-panel h3 {
+            font-size: .32rem;
+            color: #333333;
+            font-weight: bold;
+            padding: .1rem 0 .28rem 0;
+        }
+        .qd-panel h3 span {
+            font-weight: bold;
+            padding: 0 .02rem;
+        }
+        .qd-panel ul {
+            display: flex;
+            justify-content: space-between;
+        }
+        .qd-panel ul li {
+            width: .82rem;
+            height: 1.12rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f5f5f5;
+            border-radius: .1rem;
+        }
+        .qd-panel ul li i {
+            font-size: .2rem;
+            display: inline-block;
+            width: .5rem;
+            height: .5rem;
+            line-height: .5rem;
+            background: #e6e6e6;
+            border-radius: 50%;
+            text-align: center;
+            margin-top: .12rem;
+            margin-bottom: .08rem;
+            color: #333;
+        }
+        .qd-panel ul li span {
+            font-size: .22rem;
+            color: #888888;
+        }
+        .qd-panel ul li.active {
+            width: .87rem;
+            height: 1.26rem;
+            background: url(//repo.bfw.wiki/bfwrepo/images/qiandao/sigin-active-bg.png) center center no-repeat;
+            background-size: .87rem 1.26rem;
+        }
+        .qd-panel ul li.active i {
+            color: #ff8900;
+            background: none;
+            padding-right: .05rem;
+        }
+        .qd-panel ul li.active span {
+            color: #FFFFFF;
+        }
+        .qd-panel .rule {
+            padding-top: .26rem;
+            padding-bottom: .1rem;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            color: #333333;
+            font-size: .28rem;
+        }
+        .qd-panel .rule a {
+            height: .34rem;
+            display: inline-block;
+            padding-left: .45rem;
+            background: url(//repo.bfw.wiki/bfwrepo/images/qiandao/icon-info.png) left center no-repeat;
+            background-size: .34rem;
+        }
+        .qd-panel .rule p {
+            display: flex;
+        }
+        .qd-panel .rule p span {
+            display: inline-block;
+            width: .8rem;
+            height: .36rem;
+            background: #ff2d23;
+            margin-left: .1rem;
+            border-radius: .36rem;
+            position: relative;
+        }
+        .qd-panel .rule p span:after {
+            content: "";
+            display: block;
+            width: .32rem;
+            height: .32rem;
+            border-radius: 50%;
+            background: #FFFFFF;
+            position: absolute;
+            right: .02rem;
+            top: .02rem;
+            box-shadow: 0 0 .02rem rgba(0,0,0,.8);
+        }
+        .qd-panel .rule p span.close {
+            background: #e6e6e6;
+        }
+        .qd-panel .rule p span.close:after {
+            right: auto;
+            left: .02rem;
+            box-shadow: 0 0 .02rem rgba(0,0,0,.2);
+        }
+        /*快捷导航*/
+        .quick-nav {
+            padding: .4rem .65rem;
+            width: 100%;
+            border-radius: .20rem;
+            background: #FFFFFF;
+            margin-top: .2rem;
+        }
+        .quick-nav ul {
+            display: flex;
+            justify-content: space-between;
+        }
+        .quick-nav ul li a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .quick-nav ul li img {
+            width: 1rem;
+            height: 1rem;
+        }
+        .quick-nav ul li p {
+            font-size: .28rem;
+            color: #333333;
+            padding-top: .25rem;
+        }
+        /*任务列表*/
+        .task {
+            padding: .3rem .2rem 0 .2rem;
+            width: 100%;
+            border-radius: .20rem;
+            background: #FFFFFF;
+            margin-top: .2rem;
+        }
+        .task .title {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: .32rem;
+            color: #333333;
+            padding-bottom: .3rem;
+            border-bottom: .01rem solid #f6f6f6;
+        }
+        .task .title i {
+            display: inline-block;
+            width: .38rem;
+            height: .26rem;
+            margin: 0 .45rem;
+            background: url(//repo.bfw.wiki/bfwrepo/images/qiandao/title-bg.png) center center no-repeat;
+            background-size: .38rem .26rem;
+        }
+        .task ul li {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            align-items: center;
+            padding: .46rem 0;
+            border-bottom: .01rem solid #f6f6f6;
+        }
+        .task ul li:last-child {
+            border-bottom: none;
+        }
+        .task ul li img {
+            flex-shrink: 0;
+            display: inline-block;
+            width: .8rem;
+            height: .8rem;
+            border-radius: 50%;
+            margin-right: .2rem;
+        }
+        .task ul li a {
+            flex-shrink: 0;
+            display: inline-block;
+            width: 1.4rem;
+            height: .46rem;
+            line-height: .46rem;
+            text-align: center;
+            background: #fff4ca;
+            color: #c8882f;
+            font-size: .28rem;
+            border-radius: .46rem;
+        }
+        .task ul li .info {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            text-align: left;
+        }
+        .task ul li .info .t {
+            padding-bottom: .20rem;
+            display: flex;
+        }
+        .task ul li .info .t span {
+            color: #333333;
+            font-size: .32rem;
+            letter-spacing: .02rem;
+        }
+        .task ul li .info .t img {
+            display: inline-block;
+            margin: 0 .05rem 0 .08rem;
+            width: .32rem;
+            height: .32rem;
+        }
+        .task ul li .info .t span.red {
+            color: #ff2d23;
+            font-size: .34rem;
+            font-weight: bold;
+            letter-spacing: 0;
+        }
+        .task ul li .info .desc {
+            font-size: .24rem;
+            color: #999999;
+        }
+    </style>
+    <script type="text/javascript" src="https://repo.bfw.wiki/bfwrepo/js/flexible.js"></script>
+    <script type="text/javascript" src="https://repo.bfw.wiki/bfwrepo/js/zepto.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!--顶部-->
+        <div class="top-bar">
+            <i></i>
+            <span>ZTC Check-in</span>
+            <a>MY Points</a>
+        </div>
+        <!--当前积分面板-->
+        <div class="jf-panel">
+            <div class="dj">
+                <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-v5.png" />
+                <span class="red">LV</span>
+            </div>
+            <div class="jf red">
+                <label>Points:</label>
+                <span id="score">8952</span>
+              
+            </div>
+            <div class="sigin-btn red" onClick="sigin()">
+                check in
+            </div>
+        </div>
+        <!--签到面板-->
+        <div class="qd-panel">
+            <h3>check-in<span class="red" id="siginedDay"></span>day</h3>
+            <ul>
+                <li class="active"><i>+50</i><span>Monday</span></li>
+                <li class="active"><i>+50</i><span>Tuesday</span></li>
+                <li class="active"><i>+50</i><span>Wednesday</span></li>
+                <li class="active"><i>+50</i><span>Thursday</span></li>
+                <li><i>+50</i><span>Friday</span></li>
+                <li><i>+50</i><span>Saturday</span></li>
+                <li><i>+50</i><span>Sunday</span></li>
+            </ul>
+            <div class="rule">
+                <a>Rules</a>
+                <p>
+                    Tips<span id="sigin"></span>
+                </p>
+            </div>
+        </div>
+        <!--快捷导航-->
+        <div class="quick-nav">
+            <ul>
+                <li>
+                    <a href="#">
+                        <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-jifenduihuan.png" />
+                        <p>
+                            Exchange 
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-jifenchoujiang.png" />
+                        <p>
+                            lottery
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-hongbaokaquan.png" />
+                        <p>
+                            coupons
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!--任务列表-->
+        <div class="task">
+            <h3 class="title"><i></i>Earn points<i></i></h3>
+            <ul>
+                <li>
+                    <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-sigin.png" alt="" />
+                    <div class="info">
+                        <p class="t">
+                            <span>Daily check-in</span>
+                            <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-gold.png" />
+                            <span class="red">+50</span>
+                        </p>
+                        <p class="desc">
+                            Users earn points for daily check-ins
+                        </p>
+                    </div>
+                    <a href="#">Check-in</a>
+                </li>
+                <li>
+                    <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-user.png" alt="" />
+                    <div class="info">
+                        <p class="t">
+                            <span>Invite friends</span>
+                            <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-gold.png" />
+                            <span class="red">+100</span>
+                        </p>
+                        <p class="desc">
+                            Invite friends to register for points
+                        </p>
+                    </div>
+                    <a href="#">Check-in</a>
+                </li>
+                <li>
+                    <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-shop.png" alt="" />
+                    <div class="info">
+                        <p class="t">
+                            <span>Join telegram</span>
+                            <img src="https://repo.bfw.wiki/bfwrepo/images/qiandao/icon-gold.png" />
+                            <span class="red">+100</span>
+                        </p>
+                        <p class="desc">
+                            Join telegram to earn 100 points
+                        </p>
+                    </div>
+                    <a href="#">Check-in</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        //初始签到天数
+        getSingnedDay()
+        // 签到领积分
+        var canSign = true; //是否可签到
+        function sigin() {
+            var weekZh = ['日',
+                '一',
+                '二',
+                '三',
+                '四',
+                '五',
+                '六']; //中文周几
+            var week = new Date().getDay(); //英文周几
+            if (canSign) {
+                var weekTxt = '周'+weekZh[week];
+                $('.qd-panel ul li').each(function() {
+                    if ($(this).find('span').text() == weekTxt) {
+                        // 获取分数
+                        var score = Number($(this).find('i').text());
+                        // 积分相加
+                        $('#score').text(Number($('#score').text())+score);
+                        // 签到高亮显示
+                        $(this).addClass('active')
+                        canSign = false
+                        getSingnedDay()
+                        alert("Success")
+                    }
+                })
+            } else {
+                alert("Success")
+                return false;
+            }
+        }
+        //获取签到天数
+        function getSingnedDay() {
+            var siginedDayNum = 0;
+            $('.qd-panel ul li.active').each(function() {
+                siginedDayNum ++
+            })
+            $('#siginedDay').text(siginedDayNum)
+        }
+        // 签到提醒
+        $('#sigin').click(function() {
+            $(this).toggleClass('close')
+        })
+    </script>
+</body>
+
+</html>
